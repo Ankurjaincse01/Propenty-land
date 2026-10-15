@@ -76,7 +76,7 @@ export const GET = routeHandler(async (req: NextRequest) => {
   }));
 
   logger.info("Admin dashboard stats retrieved", {
-    userId: auth.userId,
+    userId: auth.user.userId,
     totalProperties,
     totalEnquiries,
   });

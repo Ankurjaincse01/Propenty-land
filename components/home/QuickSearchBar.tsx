@@ -81,7 +81,7 @@ export default function QuickSearchBar() {
             <MapPin className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-navy-400" />
             <input
               className="input pl-10 text-sm font-medium"
-              placeholder="City, locality, e.g. Wagholi, Nashik"
+              placeholder="City, locality, e.g. Parasia Road, VIP Road, Nagpur Road"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
