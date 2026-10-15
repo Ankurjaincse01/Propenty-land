@@ -46,6 +46,7 @@ loadEnv();
 import Admin from "../models/Admin";
 import Property from "../models/Property";
 import Project from "../models/Project";
+import Enquiry from "../models/Enquiry";
 import SiteSettings, { getSettings } from "../models/SiteSettings";
 
 const MONGODB_URI = process.env.MONGODB_URI;
@@ -451,6 +452,133 @@ async function seedProjectsAndPlots() {
 
   const createdPlots = await Property.create(docs);
   console.log(`• Created ${createdPlots.length} demo plots with layout coordinates`);
+  return { projects: createdProjects, properties: createdPlots };
+}
+
+async function seedEnquiries(projects: any[], properties: any[]) {
+  await Enquiry.deleteMany({});
+
+  const p1 = projects[0];
+  const p2 = projects[1];
+
+  const prop1 = properties[0]; // Plot A-12
+  const prop2 = properties[1]; // Plot A-13
+  const prop3 = properties[2]; // Plot B-04
+  const prop4 = properties[3]; // Plot C-01
+  const prop5 = properties[4]; // Plot S-07
+  const prop6 = properties[7]; // Plot S-15
+
+  const demoEnquiries = [
+    {
+      customerName: "Rajesh Verma",
+      phone: "+91 98261 45892",
+      email: "rajesh.verma82@gmail.com",
+      project: p1?._id,
+      property: prop1?._id,
+      preferredVisitDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
+      message:
+        "Interested in Plot A-12 in Satpura Green Valley. Need to know registry expenses, bank loan tie-ups (SBI/HDFC), and if site visit is possible this weekend.",
+      source: "Property Page",
+      followUpStatus: "Site Visit Scheduled",
+      internalNotes: [
+        {
+          note: "Called customer. Confirmed site visit for Saturday 11:30 AM with sales associate Vikram.",
+          addedAt: new Date(Date.now() - 4 * 60 * 60 * 1000),
+        },
+      ],
+      createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000),
+    },
+    {
+      customerName: "Pooja Deshmukh",
+      phone: "+91 94258 71234",
+      email: "pooja.deshmukh@yahoo.co.in",
+      project: p2?._id,
+      property: prop6?._id,
+      preferredVisitDate: new Date(Date.now() + 4 * 24 * 60 * 60 * 1000),
+      message:
+        "Looking for a corner plot for immediate villa construction in Sunrise Enclave. Please share payment schedule and discount for full one-time payment.",
+      source: "WhatsApp",
+      followUpStatus: "Qualified",
+      internalNotes: [
+        {
+          note: "Educator in Chhindwara. Ready with 40% initial payment. Prefers North-East facing.",
+          addedAt: new Date(Date.now() - 12 * 60 * 60 * 1000),
+        },
+      ],
+      createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
+    },
+    {
+      customerName: "Dr. Sunil Baghel",
+      phone: "+91 98930 12567",
+      email: "dr.sunilbaghel@gmail.com",
+      project: p1?._id,
+      property: prop4?._id,
+      message:
+        "Want commercial plot for clinic and diagnostic center on Parasia Road corridor. Need details on municipal permissions and parking clearance.",
+      source: "Quick Callback",
+      followUpStatus: "New",
+      internalNotes: [
+        {
+          note: "New inquiry from website popup. Requested callback between 6 PM - 8 PM.",
+          addedAt: new Date(Date.now() - 1 * 60 * 60 * 1000),
+        },
+      ],
+      createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000),
+    },
+    {
+      customerName: "Amitabh Jain",
+      phone: "+91 97555 83421",
+      email: "amitabh.jain@outlook.com",
+      project: p1?._id,
+      property: prop3?._id,
+      preferredVisitDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+      message:
+        "Interested in garden-facing residential plot B-04 for my parents. Please send latest layout brochure and video tour if available.",
+      source: "Property Page",
+      followUpStatus: "Contacted",
+      internalNotes: [
+        {
+          note: "Brochure and price breakdown sent on WhatsApp. Waiting for family discussion.",
+          addedAt: new Date(Date.now() - 8 * 60 * 60 * 1000),
+        },
+      ],
+      createdAt: new Date(Date.now() - 18 * 60 * 60 * 1000),
+    },
+    {
+      customerName: "Vikramaditya Shrivastava",
+      phone: "+91 98272 90145",
+      email: "vikram.shrivastava@rediffmail.com",
+      project: p2?._id,
+      property: prop5?._id,
+      message:
+        "Looking for an affordable residential plot near Nagpur Road under ₹12 Lakhs budget for long term investment.",
+      source: "Contact Page",
+      followUpStatus: "New",
+      internalNotes: [],
+      createdAt: new Date(Date.now() - 30 * 60 * 1000),
+    },
+    {
+      customerName: "Kavita Rathore",
+      phone: "+91 91790 34812",
+      email: "kavita.rathore@gmail.com",
+      project: p1?._id,
+      property: prop2?._id,
+      message:
+        "Token advance payment details needed for booking plot A-13. Can we block it for 15 days until registry?",
+      source: "WhatsApp",
+      followUpStatus: "Closed",
+      internalNotes: [
+        {
+          note: "Token advance received. Booking confirmed for Plot A-13. Agreement drafting in progress.",
+          addedAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
+        },
+      ],
+      createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000),
+    },
+  ];
+
+  await Enquiry.create(demoEnquiries);
+  console.log(`• Created ${demoEnquiries.length} demo enquiries with realistic follow-up statuses`);
 }
 
 async function main() {
@@ -467,12 +595,14 @@ async function main() {
 
     await seedSettings();
     await seedAdmin();
-    await seedProjectsAndPlots();
+    const seeded = await seedProjectsAndPlots();
+    await seedEnquiries(seeded.projects, seeded.properties);
 
     const counts = {
       admins: await Admin.countDocuments(),
       projects: await Project.countDocuments(),
       properties: await Property.countDocuments(),
+      enquiries: await Enquiry.countDocuments(),
       settings: await SiteSettings.countDocuments(),
     };
     console.log("\n✓ Seed complete:", counts);
