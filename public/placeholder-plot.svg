@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" role="img" aria-label="Plot image placeholder">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0F291E"/>
+      <stop offset="100%" stop-color="#143628"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#g)"/>
+  <g fill="none" stroke="#C5A059" stroke-width="2" opacity="0.55">
+    <rect x="80" y="120" width="200" height="150"/>
+    <rect x="300" y="120" width="200" height="150"/>
+    <rect x="520" y="120" width="200" height="150"/>
+    <rect x="80" y="300" width="200" height="180"/>
+    <rect x="300" y="300" width="200" height="180"/>
+    <rect x="520" y="300" width="200" height="180"/>
+  </g>
+  <text x="400" y="560" text-anchor="middle" fill="#FAF8F5" font-family="system-ui, sans-serif" font-size="26" opacity="0.85">GreenLand Estates</text>
+</svg>

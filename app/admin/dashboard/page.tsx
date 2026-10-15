@@ -1,0 +1,138 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import {
+  Building2,
+  CheckCircle2,
+  Clock,
+  CircleSlash,
+  MessagesSquare,
+  Sparkles,
+  Plus,
+  ArrowRight,
+} from "lucide-react";
+import api from "@/lib/api";
+import { relativeTime, STATUS_STYLES, cn } from "@/lib/utils";
+
+interface Stats {
+  totalProperties: number;
+  available: number;
+  reserved: number;
+  sold: number;
+  totalEnquiries: number;
+  newEnquiries: number;
+  totalProjects: number;
+  recentEnquiries: any[];
+  recentProperties: any[];
+}
+
+export default function AdminDashboardPage() {
+  const [stats, setStats] = useState<Stats | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    api
+      .get("/admin/dashboard/stats")
+      .then(({ data }) => setStats(data.data))
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
+
+  const cards = [
+    { label: "Total properties", value: stats?.totalProperties, icon: Building2, tone: "bg-navy-50 text-navy-700" },
+    { label: "Available", value: stats?.available, icon: CheckCircle2, tone: "bg-emerald-50 text-emerald-700" },
+    { label: "Reserved", value: stats?.reserved, icon: Clock, tone: "bg-amber-50 text-amber-700" },
+    { label: "Sold", value: stats?.sold, icon: CircleSlash, tone: "bg-slate-100 text-slate-600" },
+    { label: "Total enquiries", value: stats?.totalEnquiries, icon: MessagesSquare, tone: "bg-violet-50 text-violet-700" },
+    { label: "New enquiries", value: stats?.newEnquiries, icon: Sparkles, tone: "bg-blue-50 text-blue-700" },
+  ];
+
+  return (
+    <div className="space-y-8">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h2 className="font-heading text-2xl font-extrabold text-navy-900">Overview</h2>
+          <p className="text-sm text-navy-500">Live figures calculated from your database.</p>
+        </div>
+        <Link href="/admin/properties/new" className="btn-primary">
+          <Plus className="h-4 w-4" /> Add property
+        </Link>
+      </div>
+
+      <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
+        {cards.map((c) => (
+          <div key={c.label} className="rounded-2xl border border-navy-100 bg-white p-4 shadow-soft">
+            <div className={cn("mb-3 flex h-9 w-9 items-center justify-center rounded-lg", c.tone)}>
+              <c.icon className="h-4 w-4" />
+            </div>
+            <p className="tabular font-heading text-2xl font-extrabold text-navy-900">
+              {loading ? "—" : (c.value ?? 0)}
+            </p>
+            <p className="text-xs text-navy-500">{c.label}</p>
+          </div>
+        ))}
+      </div>
+
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <Panel title="Recent enquiries" href="/admin/enquiries" empty={!stats?.recentEnquiries?.length}>
+          {stats?.recentEnquiries?.map((e) => (
+            <div key={e._id} className="flex items-center justify-between gap-3 border-b border-navy-100 py-3 last:border-0">
+              <div className="min-w-0">
+                <p className="truncate text-sm font-semibold text-navy-800">{e.customerName}</p>
+                <p className="truncate text-xs text-navy-500">
+                  {e.phone} · {relativeTime(e.createdAt)}
+                </p>
+              </div>
+              <span className={cn("chip shrink-0", STATUS_STYLES[e.followUpStatus])}>
+                {e.followUpStatus}
+              </span>
+            </div>
+          ))}
+        </Panel>
+
+        <Panel title="Recently added properties" href="/admin/properties" empty={!stats?.recentProperties?.length}>
+          {stats?.recentProperties?.map((p) => (
+            <div key={p._id} className="flex items-center justify-between gap-3 border-b border-navy-100 py-3 last:border-0">
+              <div className="min-w-0">
+                <p className="truncate text-sm font-semibold text-navy-800">{p.title}</p>
+                <p className="truncate text-xs text-navy-500">
+                  {[p.location?.locality, p.location?.city].filter(Boolean).join(", ")}
+                </p>
+              </div>
+              <span className={cn("chip shrink-0", STATUS_STYLES[p.status])}>{p.status}</span>
+            </div>
+          ))}
+        </Panel>
+      </div>
+    </div>
+  );
+}
+
+function Panel({
+  title,
+  href,
+  empty,
+  children,
+}: {
+  title: string;
+  href: string;
+  empty: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="rounded-2xl border border-navy-100 bg-white p-5 shadow-soft">
+      <div className="mb-3 flex items-center justify-between">
+        <h3 className="font-heading text-base font-bold text-navy-900">{title}</h3>
+        <Link href={href} className="inline-flex items-center gap-1 text-xs font-semibold text-forest-700 hover:underline">
+          View all <ArrowRight className="h-3 w-3" />
+        </Link>
+      </div>
+      {empty ? (
+        <p className="py-6 text-center text-sm text-navy-400">Nothing yet.</p>
+      ) : (
+        <div>{children}</div>
+      )}
+    </div>
+  );
+}
