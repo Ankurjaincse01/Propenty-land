@@ -98,11 +98,6 @@ export default function Footer({ settings }: { settings: SiteSettingsData }) {
                   Admin Login
                 </Link>
               </li>
-              <li>
-                <Link href="/admin/register" className="text-navy-400 transition hover:text-gold-400">
-                  Create Account
-                </Link>
-              </li>
             </ul>
           </div>
 

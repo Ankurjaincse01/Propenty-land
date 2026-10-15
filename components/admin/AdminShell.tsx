@@ -33,7 +33,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
   const [admin, setAdmin] = useState<{ name: string; email: string; role: string } | null>(null);
 
   useEffect(() => {
-    const isPublicAuthRoute = pathname === "/admin/login" || pathname === "/admin/register";
+    const isPublicAuthRoute = pathname === "/admin/login";
     if (isPublicAuthRoute) {
       setReady(true);
       return;
@@ -65,7 +65,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
     router.replace("/admin/login");
   };
 
-  if (pathname === "/admin/login" || pathname === "/admin/register") return <>{children}</>;
+  if (pathname === "/admin/login") return <>{children}</>;
 
   if (!ready) {
     return (
