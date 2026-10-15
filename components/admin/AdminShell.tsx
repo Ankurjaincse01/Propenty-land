@@ -38,6 +38,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
       setReady(true);
       return;
     }
+    const token = typeof window !== "undefined" ? localStorage.getItem("adminToken") : null;
     if (!token) {
       router.replace("/admin/login");
       return;
