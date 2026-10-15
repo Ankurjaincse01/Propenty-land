@@ -14,17 +14,21 @@ import {
 } from "lucide-react";
 import api from "@/lib/api";
 import { relativeTime, STATUS_STYLES, cn } from "@/lib/utils";
+import DashboardCharts from "@/components/admin/DashboardCharts";
 
 interface Stats {
   totalProperties: number;
   available: number;
   reserved: number;
   sold: number;
+  totalProjects: number;
   totalEnquiries: number;
   newEnquiries: number;
-  totalProjects: number;
   recentEnquiries: any[];
   recentProperties: any[];
+  enquiriesByStatus?: { status: string; count: number }[];
+  enquiriesBySource?: { source: string; count: number }[];
+  propertiesByProject?: { name: string; count: number }[];
 }
 
 export default function AdminDashboardPage() {
@@ -52,8 +56,8 @@ export default function AdminDashboardPage() {
     <div className="space-y-8">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h2 className="font-heading text-2xl font-extrabold text-navy-900">Overview</h2>
-          <p className="text-sm text-navy-500">Live figures calculated from your database.</p>
+          <h2 className="font-heading text-2xl font-extrabold text-navy-900">Overview &amp; Analytics</h2>
+          <p className="text-sm text-navy-500">Live figures &amp; graphs calculated from your database.</p>
         </div>
         <Link href="/admin/properties/new" className="btn-primary">
           <Plus className="h-4 w-4" /> Add property
@@ -73,6 +77,9 @@ export default function AdminDashboardPage() {
           </div>
         ))}
       </div>
+
+      {/* Visual Analytics & Graphs */}
+      <DashboardCharts stats={stats} loading={loading} />
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <Panel title="Recent enquiries" href="/admin/enquiries" empty={!stats?.recentEnquiries?.length}>

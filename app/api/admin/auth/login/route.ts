@@ -5,6 +5,7 @@ import { comparePassword, signToken, setAuthCookie } from "@/lib/auth";
 import { loginSchema } from "@/lib/validation";
 import { ok, fail, routeHandler } from "@/lib/http";
 import { rateLimit, clientIp } from "@/lib/rateLimit";
+import logger from "@/lib/logger";
 
 export const dynamic = "force-dynamic";
 
@@ -26,10 +27,16 @@ export const POST = routeHandler(async (req: NextRequest) => {
   const { email, password } = parsed.data;
 
   const admin = await Admin.findOne({ email: email.toLowerCase() });
-  if (!admin) return fail("Invalid email or password.", 401);
+  if (!admin) {
+    logger.warn("Admin login failed: email not found", { email, ip });
+    return fail("Invalid email or password.", 401);
+  }
 
   const valid = await comparePassword(password, admin.passwordHash);
-  if (!valid) return fail("Invalid email or password.", 401);
+  if (!valid) {
+    logger.warn("Admin login failed: invalid password", { email, ip });
+    return fail("Invalid email or password.", 401);
+  }
 
   const token = signToken({
     userId: String(admin._id),
@@ -39,6 +46,7 @@ export const POST = routeHandler(async (req: NextRequest) => {
 
   admin.lastLoginAt = new Date();
   await admin.save();
+  logger.info("Admin login successful", { email: admin.email, ip });
 
   const res = ok({
     token,

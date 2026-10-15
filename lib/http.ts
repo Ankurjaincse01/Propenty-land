@@ -24,6 +24,8 @@ export function fail(
   );
 }
 
+import logger from "@/lib/logger";
+
 /**
  * Wrap a route handler so unexpected errors never leak internals.
  */
@@ -32,7 +34,7 @@ export function routeHandler<T extends (...args: any[]) => Promise<Response>>(fn
     try {
       return await fn(...args);
     } catch (err) {
-      console.error("[api-error]", err);
+      logger.error("[api-error]", { error: err instanceof Error ? err.stack : err });
       return fail("Something went wrong. Please try again.", 500, err);
     }
   };
