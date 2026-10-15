@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { Menu, X, MessageCircle, Phone, User } from "lucide-react";
+import { Menu, X, MessageCircle, Phone } from "lucide-react";
 import { cn, generateWhatsAppUrl } from "@/lib/utils";
 import { navLinks, SiteSettingsData } from "@/lib/defaults";
 
@@ -106,15 +106,6 @@ export default function Navbar({ settings }: { settings: SiteSettingsData }) {
             <MessageCircle className="h-3.5 w-3.5" />
             WhatsApp
           </a>
-
-          <Link
-            href="/admin/login"
-            className="flex items-center gap-1.5 rounded-xl border border-navy-200/90 bg-white px-3.5 py-2 text-xs font-bold text-navy-700 shadow-sm transition hover:border-forest-700 hover:bg-forest-50 hover:text-forest-800"
-            title="Sign in / Admin Portal"
-          >
-            <User className="h-3.5 w-3.5 text-forest-700" />
-            <span>Sign in</span>
-          </Link>
         </div>
 
         <button
@@ -153,15 +144,6 @@ export default function Navbar({ settings }: { settings: SiteSettingsData }) {
               >
                 <MessageCircle className="h-4 w-4" /> WhatsApp
               </a>
-            </div>
-
-            <div className="border-t border-navy-100 pt-3">
-              <Link
-                href="/admin/login"
-                className="flex items-center justify-center gap-2 rounded-xl border border-navy-200 bg-stone/70 py-2.5 text-sm font-bold text-navy-800 hover:bg-stone"
-              >
-                <User className="h-4 w-4 text-forest-700" /> Sign In / Admin Portal
-              </Link>
             </div>
           </div>
         </div>

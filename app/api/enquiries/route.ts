@@ -36,14 +36,17 @@ export const POST = routeHandler(async (req: NextRequest) => {
     propertyId = found ? String(found._id) : null;
   }
 
+  // Sanitize user inputs to prevent stored XSS or HTML injection
+  const sanitize = (text?: string) => (text ? text.replace(/<[^>]*>?/gm, "").trim() : "");
+
   const enquiry = await Enquiry.create({
-    customerName: data.customerName,
-    phone: data.phone,
-    email: data.email || undefined,
+    customerName: sanitize(data.customerName),
+    phone: sanitize(data.phone),
+    email: data.email ? sanitize(data.email).toLowerCase() : undefined,
     property: propertyId,
     project: data.project || undefined,
     preferredVisitDate: data.preferredVisitDate || undefined,
-    message: data.message,
+    message: sanitize(data.message),
     source: data.source,
     followUpStatus: "New",
   });

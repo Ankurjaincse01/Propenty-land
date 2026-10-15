@@ -94,8 +94,8 @@ export default function Footer({ settings }: { settings: SiteSettingsData }) {
                 </Link>
               </li>
               <li>
-                <Link href="/admin/login" className="text-navy-400 transition hover:text-gold-400">
-                  Admin Login
+                <Link href="/contact" className="text-navy-300 transition hover:text-gold-400">
+                  Contact Us
                 </Link>
               </li>
             </ul>

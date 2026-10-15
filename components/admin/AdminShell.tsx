@@ -80,19 +80,24 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-50 w-64 transform border-r border-navy-100 bg-navy-900 text-white transition-transform lg:static lg:translate-x-0",
+          "fixed inset-y-0 left-0 z-50 flex h-full w-64 flex-col border-r border-navy-800 bg-navy-900 text-white transition-transform lg:sticky lg:top-0 lg:h-screen lg:translate-x-0",
           open ? "translate-x-0" : "-translate-x-full"
         )}
       >
-        <div className="flex h-16 items-center justify-between border-b border-white/10 px-5">
-          <Link href="/admin/dashboard" className="font-heading text-lg font-extrabold">
-            GreenLand <span className="font-light">Admin</span>
+        <div className="flex h-16 shrink-0 items-center justify-between border-b border-white/10 px-5">
+          <Link href="/admin/dashboard" className="font-heading text-lg font-extrabold text-white">
+            GreenLand <span className="font-light text-forest-300">Admin</span>
           </Link>
-          <button onClick={() => setOpen(false)} className="lg:hidden">
+          <button
+            onClick={() => setOpen(false)}
+            className="rounded-lg p-1.5 text-navy-400 hover:bg-white/10 hover:text-white lg:hidden"
+            aria-label="Close sidebar"
+          >
             <X className="h-5 w-5" />
           </button>
         </div>
-        <nav className="space-y-1 p-3">
+
+        <nav className="flex-1 space-y-1 overflow-y-auto p-3">
           {nav.map((item) => {
             const active = pathname.startsWith(item.href);
             return (
@@ -102,40 +107,43 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
                 className={cn(
                   "flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium transition",
                   active
-                    ? "bg-gold-400 text-navy-900"
+                    ? "bg-gold-400 text-navy-900 font-semibold shadow-soft"
                     : "text-navy-200 hover:bg-white/10 hover:text-white"
                 )}
               >
-                <item.icon className="h-4 w-4" />
+                <item.icon className="h-4 w-4 shrink-0" />
                 {item.label}
               </Link>
             );
           })}
         </nav>
-        <div className="absolute bottom-0 w-full border-t border-white/10 p-3">
+
+        <div className="shrink-0 border-t border-white/10 bg-navy-950/40 p-3">
           <Link
             href="/"
             target="_blank"
-            className="flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm text-navy-200 hover:bg-white/10 hover:text-white"
+            rel="noopener noreferrer"
+            className="flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm text-navy-200 transition hover:bg-white/10 hover:text-white"
           >
-            <ExternalLink className="h-4 w-4" /> View website
+            <ExternalLink className="h-4 w-4 shrink-0" /> View website
           </Link>
           <button
             onClick={logout}
-            className="mt-1 flex w-full items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm text-navy-200 hover:bg-rose-500/20 hover:text-white"
+            className="mt-1 flex w-full items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm text-rose-300 transition hover:bg-rose-500/20 hover:text-rose-100"
           >
-            <LogOut className="h-4 w-4" /> Logout
+            <LogOut className="h-4 w-4 shrink-0" /> Logout
           </button>
           {admin && (
-            <p className="px-3.5 pt-2 text-[11px] text-navy-400">
-              {admin.name} · {admin.role}
-            </p>
+            <div className="mt-2 border-t border-white/5 px-3.5 pt-2">
+              <p className="truncate text-xs font-semibold text-white">{admin.name}</p>
+              <p className="truncate text-[11px] text-navy-400 capitalize">{admin.role}</p>
+            </div>
           )}
         </div>
       </aside>
 
       {open && (
-        <div className="fixed inset-0 z-40 bg-navy-900/50 lg:hidden" onClick={() => setOpen(false)} />
+        <div className="fixed inset-0 z-40 bg-navy-950/60 backdrop-blur-xs lg:hidden" onClick={() => setOpen(false)} />
       )}
 
       <div className="flex min-w-0 flex-1 flex-col">

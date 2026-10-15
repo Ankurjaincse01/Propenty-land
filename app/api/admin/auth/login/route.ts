@@ -28,6 +28,8 @@ export const POST = routeHandler(async (req: NextRequest) => {
 
   const admin = await Admin.findOne({ email: email.toLowerCase() });
   if (!admin) {
+    // Run dummy comparison to prevent user enumeration via timing attack
+    await comparePassword(password, "$2a$10$wK1k6sC27jU93H2KzZ0I1eQ7bHn2Xy5RkL6mOpQrStUvWxYz12345");
     logger.warn("Admin login failed: email not found", { email, ip });
     return fail("Invalid email or password.", 401);
   }
