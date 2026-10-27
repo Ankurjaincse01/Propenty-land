@@ -80,7 +80,7 @@ export default function DashboardCharts({ stats, loading }: Props) {
 
   if (loading) {
     return (
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      <div className="grid min-w-0 grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
         <div className="h-64 animate-pulse rounded-2xl border border-navy-100 bg-white" />
         <div className="h-64 animate-pulse rounded-2xl border border-navy-100 bg-white" />
       </div>
@@ -88,27 +88,27 @@ export default function DashboardCharts({ stats, loading }: Props) {
   }
 
   return (
-    <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+    <div className="grid min-w-0 grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
       {/* Chart 1: Inventory Status Donut & Breakdown */}
-      <div className="rounded-2xl border border-navy-100 bg-white p-6 shadow-soft">
-        <div className="mb-5 flex items-center justify-between">
-          <div className="flex items-center gap-2">
+      <div className="min-w-0 rounded-2xl border border-navy-100 bg-white p-5 shadow-soft sm:p-6">
+        <div className="mb-5 flex flex-wrap items-start justify-between gap-3">
+          <div className="flex min-w-0 items-center gap-2">
             <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-50 text-emerald-800">
               <PieChart className="h-4 w-4" />
             </span>
-            <div>
+            <div className="min-w-0">
               <h3 className="font-heading text-base font-bold text-navy-900">
                 Inventory Status Graph
               </h3>
               <p className="text-xs text-navy-500">Live plot availability distribution</p>
             </div>
           </div>
-          <span className="chip border border-navy-100 bg-stone text-xs font-semibold text-navy-700">
+          <span className="chip shrink-0 border border-navy-100 bg-stone text-xs font-semibold text-navy-700">
             {totalPlots} Total Plots
           </span>
         </div>
 
-        <div className="flex flex-col items-center gap-6 sm:flex-row sm:justify-around">
+        <div className="flex min-w-0 flex-col items-center gap-6 sm:flex-row sm:justify-around">
           {/* Donut SVG */}
           <div className="relative flex h-36 w-36 items-center justify-center">
             <svg className="h-full w-full -rotate-90 transform" viewBox="0 0 100 100">
@@ -178,7 +178,7 @@ export default function DashboardCharts({ stats, loading }: Props) {
           </div>
 
           {/* Legend and Progress Bars */}
-          <div className="w-full max-w-xs space-y-3">
+          <div className="w-full min-w-0 max-w-xs space-y-3">
             <div>
               <div className="flex justify-between text-xs font-semibold">
                 <span className="flex items-center gap-1.5 text-navy-700">
@@ -234,20 +234,20 @@ export default function DashboardCharts({ stats, loading }: Props) {
       </div>
 
       {/* Chart 2: Lead Pipeline / Enquiry Status Bar Graph */}
-      <div className="rounded-2xl border border-navy-100 bg-white p-6 shadow-soft">
-        <div className="mb-5 flex items-center justify-between">
-          <div className="flex items-center gap-2">
+      <div className="min-w-0 rounded-2xl border border-navy-100 bg-white p-5 shadow-soft sm:p-6">
+        <div className="mb-5 flex flex-wrap items-start justify-between gap-3">
+          <div className="flex min-w-0 items-center gap-2">
             <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-50 text-indigo-800">
               <BarChart3 className="h-4 w-4" />
             </span>
-            <div>
+            <div className="min-w-0">
               <h3 className="font-heading text-base font-bold text-navy-900">
                 Lead Pipeline Graph
               </h3>
               <p className="text-xs text-navy-500">Customer enquiries by follow-up stage</p>
             </div>
           </div>
-          <span className="chip border border-navy-100 bg-stone text-xs font-semibold text-navy-700">
+          <span className="chip shrink-0 border border-navy-100 bg-stone text-xs font-semibold text-navy-700">
             {stats?.totalEnquiries || 0} Total Leads
           </span>
         </div>
@@ -280,9 +280,9 @@ export default function DashboardCharts({ stats, loading }: Props) {
 
       {/* Chart 3: Township Distribution */}
       {projects.length > 0 && (
-        <div className="rounded-2xl border border-navy-100 bg-white p-6 shadow-soft lg:col-span-2">
-          <div className="mb-4 flex items-center justify-between">
-            <div className="flex items-center gap-2">
+        <div className="min-w-0 rounded-2xl border border-navy-100 bg-white p-5 shadow-soft sm:p-6 lg:col-span-2">
+          <div className="mb-4 flex items-start justify-between gap-3">
+            <div className="flex min-w-0 items-center gap-2">
               <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gold-50 text-gold-800">
                 <Layers className="h-4 w-4" />
               </span>
@@ -305,11 +305,11 @@ export default function DashboardCharts({ stats, loading }: Props) {
                   key={proj.name}
                   className="rounded-xl border border-navy-100 bg-stone/50 p-4 transition hover:border-forest-700/40"
                 >
-                  <div className="flex items-center justify-between">
-                    <p className="font-heading text-sm font-bold text-navy-900 truncate">
+                      <div className="flex min-w-0 items-start justify-between gap-3">
+                        <p className="min-w-0 truncate font-heading text-sm font-bold text-navy-900">
                       {proj.name}
                     </p>
-                    <span className="tabular text-xs font-bold text-forest-800">
+                        <span className="shrink-0 tabular text-xs font-bold text-forest-800">
                       {proj.count} plots ({pct}%)
                     </span>
                   </div>

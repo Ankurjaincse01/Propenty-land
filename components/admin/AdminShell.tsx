@@ -76,11 +76,11 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
   }
 
   return (
-    <div className="min-h-screen bg-alabaster lg:flex">
+    <div className="min-h-screen overflow-x-hidden bg-alabaster lg:flex">
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-50 flex h-full w-64 flex-col border-r border-navy-800 bg-navy-900 text-white transition-transform lg:sticky lg:top-0 lg:h-screen lg:translate-x-0",
+          "fixed inset-y-0 left-0 z-50 flex h-full w-64 shrink-0 flex-col overflow-hidden border-r border-navy-800 bg-navy-900 text-white transition-transform lg:translate-x-0",
           open ? "translate-x-0" : "-translate-x-full"
         )}
       >
@@ -97,7 +97,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
           </button>
         </div>
 
-        <nav className="flex-1 space-y-1 overflow-y-auto p-3">
+        <nav className="min-h-0 flex-1 space-y-1 overflow-hidden p-3">
           {nav.map((item) => {
             const active = pathname.startsWith(item.href);
             return (
@@ -146,7 +146,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
         <div className="fixed inset-0 z-40 bg-navy-950/60 backdrop-blur-xs lg:hidden" onClick={() => setOpen(false)} />
       )}
 
-      <div className="flex min-w-0 flex-1 flex-col">
+      <div className="flex min-w-0 flex-1 flex-col lg:ml-64">
         <header className="sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-navy-100 bg-white px-4 lg:px-8">
           <button onClick={() => setOpen(true)} className="rounded-lg p-2 hover:bg-stone lg:hidden">
             <Menu className="h-5 w-5" />
@@ -155,7 +155,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
             {nav.find((n) => pathname.startsWith(n.href))?.label || "Admin"}
           </h1>
         </header>
-        <main className="flex-1 p-4 lg:p-8">{children}</main>
+        <main className="min-w-0 flex-1 overflow-x-hidden p-4 lg:p-8">{children}</main>
       </div>
     </div>
   );

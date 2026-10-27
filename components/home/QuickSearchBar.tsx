@@ -72,12 +72,15 @@ export default function QuickSearchBar() {
         </div>
       </div>
 
-      <form onSubmit={submit} className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-5 lg:items-end">
-        <div className="lg:col-span-2">
+      <form
+        onSubmit={submit}
+        className="grid min-w-0 grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(220px,1fr)] lg:items-end"
+      >
+        <div className="min-w-0">
           <label className="label text-xs uppercase tracking-wider text-navy-500">
             Location or Plot Name
           </label>
-          <div className="relative">
+          <div className="relative min-w-0">
             <MapPin className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-navy-400" />
             <input
               className="input pl-10 text-sm font-medium"
@@ -92,7 +95,7 @@ export default function QuickSearchBar() {
           <label className="label text-xs uppercase tracking-wider text-navy-500">
             Min Budget
           </label>
-          <div className="relative">
+          <div className="relative min-w-0">
             <IndianRupee className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-navy-400" />
             <input
               type="number"
@@ -108,7 +111,7 @@ export default function QuickSearchBar() {
           <label className="label text-xs uppercase tracking-wider text-navy-500">
             Max Budget
           </label>
-          <div className="relative">
+          <div className="relative min-w-0">
             <IndianRupee className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-navy-400" />
             <input
               type="number"
@@ -120,10 +123,10 @@ export default function QuickSearchBar() {
           </div>
         </div>
 
-        <div>
+        <div className="min-w-0">
           <button
             type="submit"
-            className="btn-primary w-full py-3.5 text-sm font-bold shadow-soft hover:shadow-card"
+            className="btn-primary h-[50px] w-full min-w-0 py-3 text-sm font-bold shadow-soft hover:shadow-card"
           >
             <Search className="h-4 w-4" />
             Search Plots
@@ -155,4 +158,3 @@ export default function QuickSearchBar() {
     </div>
   );
 }
-
